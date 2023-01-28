@@ -1,0 +1,23 @@
+spin_version = "1"
+authors = ["Caleb Schoepp <caleb.schoepp@fermyon.com>"]
+description = "A persistent like button for your blog"
+name = "like-button"
+trigger = { type = "http", base = "/" }
+version = "0.1.0"
+
+[[component]]
+id = "api"
+source = "target/spin-http-js.wasm"
+exclude_files = ["**/node_modules"]
+key_value_stores = ["default"]
+[component.trigger]
+route = "/api/..."
+[component.build]
+command = "npm run build"
+
+[[component]]
+source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.0.1/spin_static_fs.wasm", digest = "sha256:650376c33a0756b1a52cad7ca670f1126391b79050df0321407da9c741d32375" }
+id = "ui"
+files = [ { source = "assets", destination = "/" } ]
+[component.trigger]
+route = "/static/..."

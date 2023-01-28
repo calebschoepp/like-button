@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="likebutton.js"></script>
+  </head>
+  <body>
+    <button
+      type="button"
+      class="flex items-center justify-center h-10 gap-2 overflow-hidden text-white transition-transform bg-orange-400 rounded-full like-button hover:cursor-default active:scale-95"
+      onClick="clickLikeButton()"
+    >
+      <div
+        class="relative w-full h-full overflow-hidden flex items-center justify-center gap-2 px-4"
+      >
+        <img src="emptyheart.svg" id="empty-heart" class="block" />
+        <img src="fullheart.svg" id="full-heart" class="hidden" />
+        <span class="inline-flex" id="like-count"></span>
+      </div>
+    </button>
+  </body>
+</html>
