@@ -1,6 +1,6 @@
 spin_version = "1"
 authors = ["Caleb Schoepp <caleb.schoepp@fermyon.com>"]
-description = "A persistent like button for your blog"
+description = "A simple and persistent like button for your blog"
 name = "like-button"
 trigger = { type = "http", base = "/" }
 version = "0.1.0"
