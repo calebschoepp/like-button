@@ -20,7 +20,7 @@ window.onload = onLoad;
 
 // === UTILITIES ===
 
-const API_BASE_URL = "http://localhost:3000/api/";
+const API_BASE_URL = "http://localhost:3000";
 
 function hasAlreadyLikedPost() {
   const postKey = getPostKey();
@@ -31,7 +31,7 @@ function hasAlreadyLikedPost() {
 function incrementLikeCount() {
   const postKey = getPostKey();
 
-  fetch(`${API_BASE_URL}${postKey}`, {
+  fetch(`${API_BASE_URL}/api/${postKey}`, {
     method: "POST",
   }).then((res) => {
     res.json().then((data) => {
@@ -55,7 +55,7 @@ function fillHeart() {
 function getAndSetLikeCount() {
   const postKey = getPostKey();
 
-  fetch(`${API_BASE_URL}${postKey}`).then((res) => {
+  fetch(`${API_BASE_URL}/api/${postKey}`).then((res) => {
     res.json().then((data) => {
       setLikeCountText(data.likes);
     });
