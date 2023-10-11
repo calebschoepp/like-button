@@ -1,10 +1,10 @@
-import { HttpRequest, HttpResponse } from "@fermyon/spin-sdk";
+import { HttpRequest, HttpResponse, Kv, Router } from "@fermyon/spin-sdk";
 
 const KV_STORE = "default";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
-const router = utils.Router();
+const router =  Router();
 
 interface Result {
   post: string;
@@ -16,9 +16,10 @@ router.get("/api/*", async (req): Promise<HttpResponse> => {
   console.log(`GET ${req.url}`);
 
   // Prepare the KV store and the key we'll use
-  let kv = spinSdk.kv.open(KV_STORE);
-  let key = req.url.replace(/\/api/, "");
-
+  let kv = Kv.open(KV_STORE);
+  const regex = new RegExp("\\/api\\/"); 
+  let key = req.url.replace(regex, "");
+  
   // Get the number of likes for the post or if it doesn't exist default to 0
   let likes = 0;
   if (kv.exists(key)) {
@@ -36,8 +37,9 @@ router.post("/api/*", async (req): Promise<HttpResponse> => {
   console.log(`POST ${req.url}`);
 
   // Prepare the KV store and the key we'll use
-  let kv = spinSdk.kv.open(KV_STORE);
-  let key = req.url.replace(/\/api/, "");
+  let kv = Kv.open(KV_STORE);
+  const regex = new RegExp("\\/api\\/"); 
+  let key = req.url.replace(regex, "");
 
   // Get the number of likes for the post or if it doesn't exist default to 0
   let likesBefore = 0;

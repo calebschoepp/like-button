@@ -11,6 +11,7 @@
    ```shell
    git clone git@github.com:calebschoepp/like-button.git
    cd like-button
+   npm install
    spin build
    ```
 3. To locally test the like button we can run the Spin app on our machine by running `spin up`.
