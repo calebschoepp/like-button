@@ -1,14 +1,22 @@
-import { HttpRequest, HttpResponse } from "@fermyon/spin-sdk";
+import { HttpRequest, HttpResponse, Kv, Router } from "@fermyon/spin-sdk";
 
 const KV_STORE = "default";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
-const router = utils.Router();
+const router = Router();
 
 interface Result {
   post: string;
   likes: number;
+}
+
+function getKey(url: string): string {
+  const tmp = url.replace(new RegExp(/\/api\//), "");
+  // Replace all slashes with underscores because kv explorer doesn't play nice
+  // with slashes
+  const key = tmp.replace(new RegExp(/\//g), "_");
+  return key;
 }
 
 // Return the count of likes for a post e.g. GET /api/your/post/url/goes/here
@@ -16,8 +24,8 @@ router.get("/api/*", async (req): Promise<HttpResponse> => {
   console.log(`GET ${req.url}`);
 
   // Prepare the KV store and the key we'll use
-  let kv = spinSdk.kv.open(KV_STORE);
-  let key = req.url.replace(/\/api/, "");
+  let kv = Kv.open(KV_STORE);
+  let key = getKey(req.url);
 
   // Get the number of likes for the post or if it doesn't exist default to 0
   let likes = 0;
@@ -36,8 +44,8 @@ router.post("/api/*", async (req): Promise<HttpResponse> => {
   console.log(`POST ${req.url}`);
 
   // Prepare the KV store and the key we'll use
-  let kv = spinSdk.kv.open(KV_STORE);
-  let key = req.url.replace(/\/api/, "");
+  let kv = Kv.open(KV_STORE);
+  let key = getKey(req.url);
 
   // Get the number of likes for the post or if it doesn't exist default to 0
   let likesBefore = 0;
