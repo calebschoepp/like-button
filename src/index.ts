@@ -4,11 +4,19 @@ const KV_STORE = "default";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
-const router =  Router();
+const router = Router();
 
 interface Result {
   post: string;
   likes: number;
+}
+
+function getKey(url: string): string {
+  const tmp = url.replace(new RegExp(/\/api\//), "");
+  // Replace all slashes with underscores because kv explorer doesn't play nice
+  // with slashes
+  const key = tmp.replace(new RegExp(/\//g), "_");
+  return key;
 }
 
 // Return the count of likes for a post e.g. GET /api/your/post/url/goes/here
@@ -17,9 +25,8 @@ router.get("/api/*", async (req): Promise<HttpResponse> => {
 
   // Prepare the KV store and the key we'll use
   let kv = Kv.open(KV_STORE);
-  const regex = new RegExp("\\/api\\/"); 
-  let key = req.url.replace(regex, "");
-  
+  let key = getKey(req.url);
+
   // Get the number of likes for the post or if it doesn't exist default to 0
   let likes = 0;
   if (kv.exists(key)) {
@@ -38,8 +45,7 @@ router.post("/api/*", async (req): Promise<HttpResponse> => {
 
   // Prepare the KV store and the key we'll use
   let kv = Kv.open(KV_STORE);
-  const regex = new RegExp("\\/api\\/"); 
-  let key = req.url.replace(regex, "");
+  let key = getKey(req.url);
 
   // Get the number of likes for the post or if it doesn't exist default to 0
   let likesBefore = 0;
